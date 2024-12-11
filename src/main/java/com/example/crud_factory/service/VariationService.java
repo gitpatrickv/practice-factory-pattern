@@ -21,4 +21,9 @@ public class VariationService extends CrudService{
     protected String getOne() {
         return "Get One Variation";
     }
+
+    @Override
+    protected String moduleName(){
+        return Module.variation.getModuleName();
+    }
 }

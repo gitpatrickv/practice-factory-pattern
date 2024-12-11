@@ -1,14 +1,10 @@
 package com.example.crud_factory.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-//@Getter
-//@AllArgsConstructor
 public enum Module {
     inventory("inventoryService", "inventory"),
     product("productService", "product"),
-    variation("variationService", "variation");
+    variation("variationService", "variation"),
+    item("itemService", "item");
 
     private final String beanName;
     private final String moduleName;

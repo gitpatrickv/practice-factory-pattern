@@ -1,11 +1,10 @@
 package com.example.crud_factory.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Arrays;
 
-//@RequiredArgsConstructor
+
 public class CrudServiceFactory {
 
     private final ApplicationContext applicationContext;

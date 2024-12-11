@@ -19,4 +19,9 @@ public class ProductService extends CrudService{
     protected String getOne() {
         return "Get One Product";
     }
+
+    @Override
+    protected String moduleName(){
+        return Module.product.getModuleName();
+    }
 }

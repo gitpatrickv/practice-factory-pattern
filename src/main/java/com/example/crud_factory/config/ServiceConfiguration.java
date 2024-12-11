@@ -1,15 +1,11 @@
 package com.example.crud_factory.config;
 
-import com.example.crud_factory.service.CrudServiceFactory;
-import com.example.crud_factory.service.InventoryService;
-import com.example.crud_factory.service.ProductService;
-import com.example.crud_factory.service.VariationService;
-import lombok.RequiredArgsConstructor;
+import com.example.crud_factory.service.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//@RequiredArgsConstructor
+
 @Configuration
 public class ServiceConfiguration {
 
@@ -37,5 +33,10 @@ public class ServiceConfiguration {
     @Bean (name = "variationService")
     public VariationService getVariationService(){
         return new VariationService();
+    }
+
+    @Bean (name = "itemService")
+    public ItemService getItemService(){
+        return new ItemService();
     }
 }

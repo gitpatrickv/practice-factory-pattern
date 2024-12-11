@@ -21,4 +21,9 @@ public class InventoryService extends CrudService{
     protected String getOne() {
         return "Get One Inventory";
     }
+
+    @Override
+    protected String moduleName(){
+        return Module.inventory.getModuleName();
+    }
 }

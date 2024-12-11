@@ -3,13 +3,12 @@ package com.example.crud_factory.controller;
 import com.example.crud_factory.service.CrudService;
 import com.example.crud_factory.service.CrudServiceFactory;
 import com.example.crud_factory.service.Module;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequiredArgsConstructor
 @RequestMapping("/api")
 public class CrudController {
 
