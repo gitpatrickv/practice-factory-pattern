@@ -2,7 +2,6 @@ package com.example.crud_factory.service;
 
 public class ItemService  extends CrudService implements OtherService{
 
-
     @Override
     protected String save() {
         return "Save Item";
@@ -29,6 +28,11 @@ public class ItemService  extends CrudService implements OtherService{
 
     @Override
     public String otherMethod() {
-        return "Other Method";
+        return "Other Item Method";
+    }
+
+    @Override
+    public String newMethod() {
+        return "New Item Method";
     }
 }

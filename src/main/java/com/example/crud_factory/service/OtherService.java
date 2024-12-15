@@ -1,6 +1,6 @@
 package com.example.crud_factory.service;
 
-public interface OtherService {
+public interface OtherService extends NewService{
 
     String otherMethod();
 }
