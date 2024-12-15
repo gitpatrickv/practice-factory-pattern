@@ -1,6 +1,11 @@
 package com.example.crud_factory.config;
 
-import com.example.crud_factory.service.*;
+import com.example.crud_factory.repository.PostRepository;
+import com.example.crud_factory.repository.ProductRepository;
+import com.example.crud_factory.service.impl.PostServiceImpl;
+import com.example.crud_factory.util.Mapper;
+import com.example.crud_factory.service.factory.CrudServiceFactory;
+import com.example.crud_factory.service.impl.ProductServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,23 +25,15 @@ public class ServiceConfiguration {
         return new CrudServiceFactory(applicationContext);
     }
 
-    @Bean (name = "inventoryService")
-    public InventoryService getInventoryService(){
-        return new InventoryService();
-    }
-
     @Bean (name = "productService")
-    public ProductService getProductService(){
-        return new ProductService();
+    public ProductServiceImpl getProductService(ProductRepository repository, Mapper mapper){
+        return new ProductServiceImpl(repository, mapper);
     }
 
-    @Bean (name = "variationService")
-    public VariationService getVariationService(){
-        return new VariationService();
+    @Bean (name = "postService")
+    public PostServiceImpl getPostService (PostRepository repository, Mapper mapper){
+        return new PostServiceImpl(repository, mapper);
     }
 
-    @Bean (name = "itemService")
-    public ItemService getItemService(){
-        return new ItemService();
-    }
+
 }

@@ -1,5 +1,6 @@
-package com.example.crud_factory.service;
+package com.example.crud_factory.service.factory;
 
+import com.example.crud_factory.service.CrudService;
 import org.springframework.context.ApplicationContext;
 
 import java.util.Arrays;
