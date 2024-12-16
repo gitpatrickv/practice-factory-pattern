@@ -39,7 +39,8 @@ public class ProductServiceImpl extends CrudService {
     @Override
     protected ProductModel getOne(String id) {
         Optional<Product>product = productRepository.findById(Integer.parseInt(id));
-        return mapper.mapEntityToModel(product.get(), ProductModel.class);
+        return product.map(value -> mapper.mapEntityToModel(value, ProductModel.class))
+                .orElse(null);
     }
 
     @Override

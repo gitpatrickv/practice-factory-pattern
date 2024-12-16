@@ -25,8 +25,13 @@ public abstract class CrudService {
     public final Response retrieve(String id){
         log.info("ID provided, retrieving {} record for id: {}", this.moduleName(), id);
         Model obj = this.getOne(id);
-        log.info("Object of type '{}' found", this.moduleName());
-        return new Response(ResponseCode.RESP_SUCCESS, String.format("Found record for ID = %s", id), obj);
+        if(obj == null) {
+            log.info("Record for {} id '{}' not found", this.moduleName(), id);
+            return new Response(ResponseCode.RESP_NOT_FOUND, String.format("Record for %s id %s not found",this.moduleName(), id), id);
+        } else {
+            log.info("Object of type '{}' found", this.moduleName());
+            return new Response(ResponseCode.RESP_SUCCESS, String.format("Found record for ID = %s", id), obj);
+        }
     }
 
     public final String updateOne(){

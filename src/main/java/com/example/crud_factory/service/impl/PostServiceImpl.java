@@ -40,7 +40,8 @@ public class PostServiceImpl extends CrudService {
     @Override
     protected PostModel getOne(String id) {
         Optional<Post> post = postRepository.findById(Long.parseLong(id));
-        return mapper.mapEntityToModel(post.get(), PostModel.class);
+        return post.map(value -> mapper.mapEntityToModel(value, PostModel.class))
+                .orElse(null);
     }
 
     @Override
