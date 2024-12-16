@@ -1,10 +1,8 @@
-package com.example.crud_factory.service;
+package com.example.crud_factory.service.factory;
 
 public enum Module {
-    inventory("inventoryService", "inventory"),
     product("productService", "product"),
-    variation("variationService", "variation"),
-    item("itemService", "item");
+    post("postService", "post");
 
     private final String beanName;
     private final String moduleName;
