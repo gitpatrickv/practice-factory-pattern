@@ -1,11 +1,8 @@
 package com.example.crud_factory.controller;
 
 import com.example.crud_factory.dto.Model;
-import com.example.crud_factory.dto.constants.ResponseCode;
 import com.example.crud_factory.dto.response.Response;
 import com.example.crud_factory.service.CrudService;
-
-
 import com.example.crud_factory.service.factory.CrudServiceFactory;
 import com.example.crud_factory.service.factory.Module;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +22,13 @@ public class CrudController {
     }
 
     @PostMapping("/{module}")
-    public ResponseEntity<String> save(@PathVariable Module module){
+    public ResponseEntity<Model> save(@PathVariable Module module, @RequestBody String jsonRequest){
         CrudService service = getService(module);
-        return new ResponseEntity<>(service.create(), HttpStatus.CREATED);
+        Response resp = service.create(jsonRequest);
+        log.info("CrudService.create() response code={}", resp.getResponseCode());
+        log.info("POST Response 201 - {}", resp.getResponseDescription());
+        Model models = (Model) resp.getResponseObject();
+        return new ResponseEntity<>(models, HttpStatus.CREATED);
     }
 
     @GetMapping("/{module}/{id}")
@@ -36,7 +37,7 @@ public class CrudController {
         Response resp = service.retrieve(id);
         log.info("CrudService.retrieve() response code={}", resp.getResponseCode());
         Model responseObject = (Model) resp.getResponseObject();
-        log.info("GET Response: 200 - Found record for id={}, returning {}", id, responseObject);
+        log.info("GET Response: 200 - {}, returning {}", resp.getResponseDescription(), responseObject);
         return new ResponseEntity<>(responseObject, HttpStatus.OK);
     }
 

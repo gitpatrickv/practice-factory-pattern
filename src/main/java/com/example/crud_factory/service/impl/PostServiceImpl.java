@@ -9,6 +9,7 @@ import com.example.crud_factory.service.factory.Module;
 import com.example.crud_factory.util.Mapper;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,9 +18,13 @@ public class PostServiceImpl extends CrudService {
     private final PostRepository postRepository;
     private final Mapper mapper;
 
+
     @Override
-    protected String save() {
-        return "Saving post";
+    protected <T extends Model> T save(T model) {
+        Post post = mapper.mapModelToEntity((PostModel) model, Post.class);
+        post.setTimestamp(LocalDateTime.now());
+        Post savedPost = postRepository.save(post);
+        return (T) mapper.mapEntityToModel(savedPost, PostModel.class);
     }
 
     @Override
@@ -42,4 +47,11 @@ public class PostServiceImpl extends CrudService {
     protected String moduleName() {
         return Module.post.getModuleName();
     }
+
+    @Override
+    protected Class modelClass() {
+        return PostModel.class;
+    }
+
+
 }
