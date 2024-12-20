@@ -5,6 +5,7 @@ import com.example.crud_factory.dto.ProductModel;
 import com.example.crud_factory.entity.Product;
 import com.example.crud_factory.repository.ProductRepository;
 import com.example.crud_factory.service.CrudService;
+import com.example.crud_factory.service.ProductService;
 import com.example.crud_factory.service.factory.Module;
 import com.example.crud_factory.util.Mapper;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class ProductServiceImpl extends CrudService {
+public class ProductServiceImpl extends CrudService implements ProductService {
 
     private final ProductRepository productRepository;
     private final Mapper mapper;
@@ -38,7 +39,7 @@ public class ProductServiceImpl extends CrudService {
 
     @Override
     protected ProductModel getOne(String id) {
-        Optional<Product>product = productRepository.findById(Integer.parseInt(id));
+        Optional<Product>product = this.getProductById(id);
         return product.map(value -> mapper.mapEntityToModel(value, ProductModel.class))
                 .orElse(null);
     }
@@ -54,4 +55,8 @@ public class ProductServiceImpl extends CrudService {
     }
 
 
+    @Override
+    public Optional<Product> getProductById(String id) {
+        return productRepository.findById(Integer.parseInt(id));
+    }
 }

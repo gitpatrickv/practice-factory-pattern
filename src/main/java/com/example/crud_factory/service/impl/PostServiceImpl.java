@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class PostServiceImpl extends CrudService {
+public class PostServiceImpl extends CrudService implements PostService {
 
     private final PostRepository postRepository;
     private final Mapper mapper;
@@ -39,7 +39,7 @@ public class PostServiceImpl extends CrudService {
 
     @Override
     protected PostModel getOne(String id) {
-        Optional<Post> post = postRepository.findById(Long.parseLong(id));
+        Optional<Post> post = this.getPostById(id);
         return post.map(value -> mapper.mapEntityToModel(value, PostModel.class))
                 .orElse(null);
     }
@@ -54,5 +54,8 @@ public class PostServiceImpl extends CrudService {
         return PostModel.class;
     }
 
-
+    @Override
+    public Optional<Post> getPostById(String id) {
+        return postRepository.findById(Long.parseLong(id));
+    }
 }

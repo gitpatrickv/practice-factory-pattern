@@ -34,7 +34,7 @@ public class CrudController {
             return new ResponseEntity<>(models, HttpStatus.CREATED);
         }else {
             log.error("POST Response: 500 - Internal server error (failed to execute request)");
-            throw new RuntimeException("An unexpected error occurred while processing the POST request.");
+            throw new RuntimeException("An unexpected error occurred while processing the request.");
         }
     }
 
@@ -52,7 +52,7 @@ public class CrudController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }else {
             log.error("GET Response: 500 - Internal server error (failed to execute request)");
-            throw new RuntimeException("An unexpected error occurred while processing the GET request.");
+            throw new RuntimeException("An unexpected error occurred while processing the request.");
         }
     }
 
