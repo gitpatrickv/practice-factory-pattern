@@ -6,6 +6,7 @@ import com.example.crud_factory.dto.response.Response;
 import com.example.crud_factory.service.CrudService;
 import com.example.crud_factory.service.factory.CrudServiceFactory;
 import com.example.crud_factory.service.factory.Module;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class CrudController {
     }
 
     @PostMapping("/{module}")
-    public ResponseEntity<Model> save(@PathVariable Module module, @RequestBody String jsonRequest){
+    public ResponseEntity<Model> save(@PathVariable Module module,@Valid @RequestBody String jsonRequest){
         CrudService service = getService(module);
         Response response = service.create(jsonRequest);
         log.info("CrudService.create() response code={}", response.getResponseCode());

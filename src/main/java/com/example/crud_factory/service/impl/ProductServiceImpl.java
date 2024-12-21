@@ -8,6 +8,7 @@ import com.example.crud_factory.service.CrudService;
 import com.example.crud_factory.service.ProductService;
 import com.example.crud_factory.service.factory.Module;
 import com.example.crud_factory.util.Mapper;
+import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ public class ProductServiceImpl extends CrudService implements ProductService {
 
     private final ProductRepository productRepository;
     private final Mapper mapper;
+    private final Validator validator;
 
     @Override
     protected <T extends Model> T save(T model) {
@@ -52,6 +54,11 @@ public class ProductServiceImpl extends CrudService implements ProductService {
     @Override
     protected Class modelClass() {
         return ProductModel.class;
+    }
+
+    @Override
+    protected Validator validator() {
+        return validator;
     }
 
 

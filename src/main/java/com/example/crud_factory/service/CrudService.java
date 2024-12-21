@@ -3,8 +3,18 @@ package com.example.crud_factory.service;
 import com.example.crud_factory.dto.Model;
 import com.example.crud_factory.dto.constants.ResponseCode;
 import com.example.crud_factory.dto.response.Response;
+import com.example.crud_factory.validator.market.CreateInfo;
+import com.example.crud_factory.validator.market.DataValidation;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class CrudService {
     private static final Logger log = LoggerFactory.getLogger(CrudService.class);
@@ -14,9 +24,11 @@ public abstract class CrudService {
     protected abstract <T extends Model> T getOne(String id);
     protected abstract String moduleName();
     protected abstract Class modelClass();
+    protected abstract Validator validator();
 
     public final Response create(String jsonRequest){
         Model object = Model.parse(jsonRequest, this.modelClass());
+        this.validateFormat(object, CreateInfo.class);
         Model saved = this.save(object);
         log.info("Saving {}: {}", this.moduleName(), saved);
         return new Response(ResponseCode.RESP_SUCCESS, String.format("Saved %s record to DB", this.moduleName()), saved);
@@ -42,5 +54,22 @@ public abstract class CrudService {
     public final String deleteOne(){
         log.info("Deleted {} ", this.moduleName());
         return this.delete();
+    }
+
+    private void validateFormat(Model obj, Class group) {
+        Validator validator = this.validator();
+        Set<ConstraintViolation<Model>> violations = validator.validate(obj, new Class[0]);
+        Set<ConstraintViolation<Model>> groupValViolations = validator.validate(obj, new Class[]{group});
+        Set<ConstraintViolation<Model>> allViolations = (Set) Stream.of(violations, groupValViolations)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        if (!allViolations.isEmpty()) {
+            throw new ConstraintViolationException(allViolations);
+        } else {
+            Set<ConstraintViolation<Model>> dataValidation = validator.validate(obj, new Class[]{DataValidation.class});
+            if (!dataValidation.isEmpty()) {
+                throw new ConstraintViolationException(dataValidation);
+            }
+        }
     }
 }

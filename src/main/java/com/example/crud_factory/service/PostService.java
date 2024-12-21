@@ -1,4 +1,4 @@
-package com.example.crud_factory.service.impl;
+package com.example.crud_factory.service;
 
 import com.example.crud_factory.entity.Post;
 
