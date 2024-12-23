@@ -21,7 +21,7 @@ public class ProductModel extends Model{
     @Null(groups = CreateInfo.class)
     @NotNull(groups = UpdateInfo.class)
     private Integer productId;
-    @NotNull
+    @NotNull(message = "{product.name.required}")
     private String productName;
     @NotNull
     private Double price;
