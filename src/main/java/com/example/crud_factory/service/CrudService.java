@@ -3,8 +3,8 @@ package com.example.crud_factory.service;
 import com.example.crud_factory.dto.Model;
 import com.example.crud_factory.dto.constants.ResponseCode;
 import com.example.crud_factory.dto.response.Response;
-import com.example.crud_factory.validator.market.CreateInfo;
-import com.example.crud_factory.validator.market.DataValidation;
+import com.example.crud_factory.validator.marker.CreateInfo;
+import com.example.crud_factory.validator.marker.DataValidation;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
@@ -12,16 +12,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public abstract class CrudService {
     private static final Logger log = LoggerFactory.getLogger(CrudService.class);
-    protected abstract <T extends Model> T save(T model);
+    protected abstract <T extends Model> Model save(T model);
     protected abstract String update();
     protected abstract String delete();
     protected abstract <T extends Model> T getOne(String id);
+    protected abstract <T extends Model> List<T> getAll();
     protected abstract String moduleName();
     protected abstract Class modelClass();
     protected abstract Validator validator();
@@ -35,14 +37,25 @@ public abstract class CrudService {
     }
 
     public final Response retrieve(String id){
-        log.info("ID provided, retrieving {} record for id: {}", this.moduleName(), id);
-        Model obj = this.getOne(id);
-        if(obj == null) {
-            log.info("Record for {} id '{}' not found", this.moduleName(), id);
-            return new Response(ResponseCode.RESP_NOT_FOUND, String.format("Record for %s id %s not found",this.moduleName(), id), id);
+            log.info("ID provided, retrieving {} record for id: {}", this.moduleName(), id);
+            Model obj = this.getOne(id);
+            if (obj == null) {
+                log.info("Record for {} id '{}' not found", this.moduleName(), id);
+                return new Response(ResponseCode.RESP_NOT_FOUND, String.format("Record for %s id %s not found", this.moduleName(), id), id);
+            } else {
+                log.info("Object of type '{}' found", this.moduleName());
+                return new Response(ResponseCode.RESP_SUCCESS, String.format("Found record for ID = %s", id), obj);
+            }
+    }
+
+    public final Response retrieveAll(){
+        log.info("retrieving all {}(s)", this.moduleName());
+        List<Model> found = this.getAll();
+        if (found.isEmpty()) {
+            return new Response(ResponseCode.RESP_NOT_FOUND, "No {} record found", this.moduleName());
         } else {
-            log.info("Object of type '{}' found", this.moduleName());
-            return new Response(ResponseCode.RESP_SUCCESS, String.format("Found record for ID = %s", id), obj);
+            log.info("Retrieved {} {} objects", found.size(), this.moduleName());
+            return new Response(ResponseCode.RESP_SUCCESS, String.format("Retrieved %s %s", found.size(), this.moduleName()) + " objects", found);
         }
     }
 

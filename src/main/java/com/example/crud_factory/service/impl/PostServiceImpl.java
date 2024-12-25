@@ -7,26 +7,30 @@ import com.example.crud_factory.repository.PostRepository;
 import com.example.crud_factory.service.CrudService;
 import com.example.crud_factory.service.PostService;
 import com.example.crud_factory.service.factory.Module;
-import com.example.crud_factory.util.Mapper;
+import com.example.crud_factory.util.EntityToModelMapper;
+import com.example.crud_factory.util.ModelToEntityMapper;
 import jakarta.validation.Validator;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 public class PostServiceImpl extends CrudService implements PostService {
 
     private final PostRepository postRepository;
-    private final Mapper mapper;
     private final Validator validator;
 
+    private ModelToEntityMapper<PostModel, Post> modelToEntityMapper = new ModelToEntityMapper<>(Post.class);
+    private EntityToModelMapper<Post, PostModel> entityToModelMapper = new EntityToModelMapper<>(PostModel.class);
+
     @Override
-    protected <T extends Model> T save(T model) {
-        Post post = mapper.mapModelToEntity((PostModel) model, Post.class);
+    protected <T extends Model> Model save(T model) {
+        Post post = modelToEntityMapper.map((PostModel) model);
         post.setTimestamp(LocalDateTime.now());
         Post savedPost = postRepository.save(post);
-        return (T) mapper.mapEntityToModel(savedPost, PostModel.class);
+        return entityToModelMapper.map(savedPost);
     }
 
     @Override
@@ -40,9 +44,17 @@ public class PostServiceImpl extends CrudService implements PostService {
     }
 
     @Override
+    protected List<PostModel> getAll() {
+        return postRepository.findAll()
+                .stream()
+                .map((post) -> entityToModelMapper.map(post))
+                .toList();
+    }
+
+    @Override
     protected PostModel getOne(String id) {
-        Optional<Post> post = this.getPostById(id);
-        return post.map(value -> mapper.mapEntityToModel(value, PostModel.class))
+        Optional<Post> optionalPost = this.getPostById(id);
+        return optionalPost.map(post -> entityToModelMapper.map(post))
                 .orElse(null);
     }
 

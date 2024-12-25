@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @Slf4j
@@ -39,6 +41,31 @@ public class CrudController {
         }
     }
 
+    @GetMapping("/{module}")
+    public ResponseEntity<List> getAll(@PathVariable Module module){
+        CrudService service = getService(module);
+        Response response = service.retrieveAll();
+        log.info("CrudService.retrieve() response code={}", response.getResponseCode());
+        if (response.getResponseCode().equals(ResponseCode.RESP_SUCCESS)) {
+
+            List<Model> list;
+            try {
+                list = (List<Model>) response.getResponseObject();
+            } catch (ClassCastException e) {
+                throw new RuntimeException(String.format("Failed to execute GET request, encountered exception with message: '%s'", e.getMessage()));
+            }
+            log.info("GET Response: 200 - Returning {} records", list.size());
+            return new ResponseEntity<>(list, HttpStatus.OK);
+
+        } else if (response.getResponseCode().equals(ResponseCode.RESP_NOT_FOUND)) {
+            log.warn("GET Response: 200 - {}", "No data found");
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } else {
+            log.error("GET Response: 500 - Internal server error (failed to execute request)");
+            throw new RuntimeException("An unexpected error occurred while processing the request.");
+        }
+    }
+
     @GetMapping("/{module}/{id}")
     public ResponseEntity<Model> getOne(@PathVariable Module module,@PathVariable String id){
         CrudService service = getService(module);
@@ -46,10 +73,10 @@ public class CrudController {
         log.info("CrudService.retrieve() response code={}", response.getResponseCode());
         if(response.getResponseCode().equals(ResponseCode.RESP_SUCCESS)) {
             Model responseObject = (Model) response.getResponseObject();
-            log.info("GET Response: 200 - {}, returning {}", response.getResponseDescription(), responseObject);
+            log.info("GET Response: {} - {}, returning {}",response.getResponseCode().getValue(), response.getResponseDescription(), responseObject);
             return new ResponseEntity<>(responseObject, HttpStatus.OK);
         } else if (response.getResponseCode().equals(ResponseCode.RESP_NOT_FOUND)){
-            log.warn("GET Response: 404 - {}", response.getResponseDescription());
+            log.warn("GET Response: {} - {}",response.getResponseCode().getValue(), response.getResponseDescription());
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }else {
             log.error("GET Response: 500 - Internal server error (failed to execute request)");

@@ -1,7 +1,7 @@
 package com.example.crud_factory.dto;
 
-import com.example.crud_factory.validator.market.CreateInfo;
-import com.example.crud_factory.validator.market.UpdateInfo;
+import com.example.crud_factory.validator.marker.CreateInfo;
+import com.example.crud_factory.validator.marker.UpdateInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.validation.constraints.NotNull;

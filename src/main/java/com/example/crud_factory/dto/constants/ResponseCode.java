@@ -10,4 +10,9 @@ public enum ResponseCode {
     private ResponseCode(String value) {
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
 }
+
