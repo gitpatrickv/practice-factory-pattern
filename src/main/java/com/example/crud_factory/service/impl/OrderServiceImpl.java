@@ -1,14 +1,15 @@
 package com.example.crud_factory.service.impl;
 
-import com.example.crud_factory.service.CashOnDelivery;
+import com.example.crud_factory.entity.PaymentMethod;
 import com.example.crud_factory.service.OrderService;
 import com.example.crud_factory.service.PaymentService;
-import com.example.crud_factory.service.StripePayment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service
+@Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final Map<String, PaymentService> paymentService;
@@ -18,7 +19,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void placeOrder(String beanName) {
+    public void placeOrder(PaymentMethod paymentMethod) {
+        String beanName = paymentMethod.getBeanName();
         paymentService.get(beanName).processPayment(10);
     }
 }

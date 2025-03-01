@@ -1,5 +1,7 @@
 package com.example.crud_factory.service;
 
+import com.example.crud_factory.entity.PaymentMethod;
+
 public interface OrderService {
-    void placeOrder(String beanName);
+    void placeOrder(PaymentMethod paymentMethod);
 }

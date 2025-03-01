@@ -1,5 +1,6 @@
 package com.example.crud_factory.controller;
 
+import com.example.crud_factory.entity.PaymentMethod;
 import com.example.crud_factory.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +15,8 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/{beanName}")
-    public void placeOrder(@PathVariable String beanName) {
-        orderService.placeOrder(beanName);
+    @PostMapping("/{paymentMethod}")
+    public void placeOrder(@PathVariable("paymentMethod") PaymentMethod paymentMethod) {
+        orderService.placeOrder(paymentMethod);
     }
 }
