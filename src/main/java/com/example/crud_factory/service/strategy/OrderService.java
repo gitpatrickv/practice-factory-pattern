@@ -1,4 +1,4 @@
-package com.example.crud_factory.service;
+package com.example.crud_factory.service.strategy;
 
 import com.example.crud_factory.entity.PaymentMethod;
 

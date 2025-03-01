@@ -1,8 +1,6 @@
-package com.example.crud_factory.service.impl;
+package com.example.crud_factory.service.strategy;
 
 import com.example.crud_factory.entity.PaymentMethod;
-import com.example.crud_factory.service.OrderService;
-import com.example.crud_factory.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.example.crud_factory.controller;
 
 import com.example.crud_factory.entity.PaymentMethod;
-import com.example.crud_factory.service.OrderService;
+import com.example.crud_factory.service.strategy.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
